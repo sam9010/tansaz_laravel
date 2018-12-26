@@ -50,7 +50,6 @@ class PackageController extends Controller
 //                    $text = json_encode($sltPackage);
 //                    $text = "0" . $text;
 //                    echo $text;exit;
-
 //                    $data['yes'] = $sltPackage;
                     echo json_encode($sltPackage);
                 } else {
