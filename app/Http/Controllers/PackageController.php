@@ -22,7 +22,7 @@ class PackageController extends Controller
     {
         try {
             if ($id) {
-                $dltPackage = Package::find($id)->first();
+                $dltPackage = Package::find($id);
                 $dltPackage->isDeleted = 1;
                 $dltPackage = $dltPackage->save();
                 if ($dltPackage) {
