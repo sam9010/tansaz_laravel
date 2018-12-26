@@ -1,0 +1,1 @@
+<footer><p>Design and support by: <a href="http://yanagroup.ir/">Yana Software Group</a></p></footer>
