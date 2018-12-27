@@ -39,80 +39,80 @@
         }
     });
 
-    function insert(filename) {
-        var title=$('#txtTitle').val();
-        var text=$('#txtContent').val();
-        var day=$('#txtDay').val();
-        var priority=$('#txtPriority').val();
-
-        var image=$('#file');
-
-        // var file_data = image[0].files[0];
-        var form_data = new FormData();
-        form_data.append('file',  image[0].files[0]);
-        form_data.append('title', title);
-        form_data.append('text', text);
-        form_data.append('day', day);
-        form_data.append('priority', priority);
-        // event.preventDefault();
-        // var form = $(this);
-        // var form_data = new FormData($(this)[0]);
-        var token = $('#token').val();
-// alert(title);
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': token
-            },
-            type: 'POST',
-            data:  form_data,
-            url: filename,
-            contentType:false,
-            processData:false,
-            dataType:'json',
-            beforeSend: function()
-            {
-                $(".loader").show();
-            },
-            success: function(result)
-            {
-                console.log(result);
-                $(".loader").hide();
-
-                if(result.error)
-                {
-                    document.getElementById('divResult').innerHTML = result.error;
-                }
-                else
-                {
-                    var addRow='<tr id="tr_'+result.id+'">'+
-                        '<td id="tdTitle_'+result.id+'">'+title+'</td>'+
-                        '<td id="tdPriority_'+result.id+'">'+priority+'</td>'+
-                        '<td>'+
-                        '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')">Edit</button>' +
-                        '<button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
-                        '</td>'+
-                        '</tr>';
-
-                    $('#rowList').prepend(addRow);
-                    $('#txtTitle').val('');
-                    $('#txtPriority').val('');
-                    $('#txtDay').val('');
-                    $("#file").val('');
-                    $("#imgFile").css({ display: "none" });
-                    $("#hrefFile").css({ display: "none" });
-
-                    document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button' +
-                        ' data-dismiss="alert"  style="float: right!important;" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
-                    $("#btnEdit").css({ display: "none" });
-
-                }
-            },
-            error: function (xhr, status, error) {
-                alert("You can not insert..." );
-            }
-        });
-
-    }
+//     function insert(filename) {
+//         var title=$('#txtTitle').val();
+//         var text=$('#txtContent').val();
+//         var day=$('#txtDay').val();
+//         var priority=$('#txtPriority').val();
+//
+//         var image=$('#file');
+//
+//         // var file_data = image[0].files[0];
+//         var form_data = new FormData();
+//         form_data.append('file',  image[0].files[0]);
+//         form_data.append('title', title);
+//         form_data.append('text', text);
+//         form_data.append('day', day);
+//         form_data.append('priority', priority);
+//         // event.preventDefault();
+//         // var form = $(this);
+//         // var form_data = new FormData($(this)[0]);
+//         var token = $('#token').val();
+// // alert(title);
+//         $.ajax({
+//             headers: {
+//                 'X-CSRF-TOKEN': token
+//             },
+//             type: 'POST',
+//             data:  form_data,
+//             url: filename,
+//             contentType:false,
+//             processData:false,
+//             dataType:'json',
+//             beforeSend: function()
+//             {
+//                 $(".loader").show();
+//             },
+//             success: function(result)
+//             {
+//                 console.log(result);
+//                 $(".loader").hide();
+//
+//                 if(result.error)
+//                 {
+//                     document.getElementById('divResult').innerHTML = result.error;
+//                 }
+//                 else
+//                 {
+//                     var addRow='<tr id="tr_'+result.id+'">'+
+//                         '<td id="tdTitle_'+result.id+'">'+title+'</td>'+
+//                         '<td id="tdPriority_'+result.id+'">'+priority+'</td>'+
+//                         '<td>'+
+//                         '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')">Edit</button>' +
+//                         '<button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
+//                         '</td>'+
+//                         '</tr>';
+//
+//                     $('#rowList').prepend(addRow);
+//                     $('#txtTitle').val('');
+//                     $('#txtPriority').val('');
+//                     $('#txtDay').val('');
+//                     $("#file").val('');
+//                     $("#imgFile").css({ display: "none" });
+//                     $("#hrefFile").css({ display: "none" });
+//
+//                     document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button' +
+//                         ' data-dismiss="alert"  style="float: right!important;" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
+//                     $("#btnEdit").css({ display: "none" });
+//
+//                 }
+//             },
+//             error: function (xhr, status, error) {
+//                 alert("You can not insert..." );
+//             }
+//         });
+//
+//     }
 
 
     function btnDelete(filename, id)
@@ -271,6 +271,73 @@
             }
         });
     }
+
+
+
+
+    $(document).on('submit', 'form#frm', function (event) {
+        event.preventDefault();
+        var form = $(this);
+        var form_data = new FormData($(this)[0]);
+        var url = form.attr("action");
+        var token = $('#token').val();
+
+          $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': token
+            },
+            type:'POST',
+            data:form_data,
+            url: url,
+            contentType:false,
+            processData:false,
+            dataType:'json',
+            beforeSend: function()
+            {
+                $(".loader").show();
+            },
+            success: function(result)
+            {
+                console.log(result);
+                $(".loader").hide();
+
+                if(result.error)
+                {
+                    document.getElementById('divResult').innerHTML = result.error;
+                }
+                else
+                {
+                    var addRow='<tr id="tr_'+result.id+'">'+
+                        '<td id="tdTitle_'+result.id+'">'+title+'</td>'+
+                        '<td>'+
+                        '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')">Edit</button>' +
+                        '<button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
+                        '</td>'+
+                        '</tr>';
+
+                    $('#rowList').prepend(addRow);
+                    $('#txtTitle').val('');
+                    $('#txtPriority').val('');
+                    $('#txtDay').val('');
+                    $("#file").val('');
+                    $("#imgFile").css({ display: "none" });
+                    $("#hrefFile").css({ display: "none" });
+
+                    document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button' +
+                        ' data-dismiss="alert"  style="float: right!important;" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
+                    $("#btnEdit").css({ display: "none" });
+
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("You can not insert..." );
+            }
+        });
+
+
+    });
+
+
 
 
 </script>

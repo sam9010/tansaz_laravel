@@ -5,7 +5,7 @@
 
             <div class="panel-body">
 
-                <form id="frm" name="frm" method="post" enctype="multipart/form-data" action="{{action('PackageController@index')}}" >
+                <form id="frm" name="frm" method="post" enctype="multipart/form-data" action="{{url('/PackageInsert')}}" >
 
                     <input type="hidden" name="token" id="token" value="{{ csrf_token() }}">
 
@@ -27,7 +27,7 @@
 
                 <div class="form-group">
                     <label for="file" style="margin-left: -221px;" >File upload</label>
-                    <input type="file" id="file" name="file">
+                    <input type="file" id="file" name="file" required="true">
                     <input type="hidden" id="fileHidden" name="fileHidden" value="">
                 </div>
 
@@ -47,7 +47,7 @@
                     {{--<a href="javascript:ajaxLoad('{{url('/PackageInsert')}}')"--}}
                        {{--class="btn btn-primary">New</a>--}}
 
-                    <button type="button" class="btn btn-info " id="btnInsert" name="btnInsert" onclick="insert( '{{url('/PackageInsert')}}' )">New<i class="fa fa-plus"></i></button>
+                    <button type="submit" class="btn btn-info " id="btnInsert" name="btnInsert" onclick="insert( '{{url('/PackageInsert')}}' )">New<i class="fa fa-plus"></i></button>
 
                     {{--<button type="button" class="btn btn-info " id="btnInsert" name="btnInsert" onclick="insert( '{{action('PackageController@insert')}}' )">New<i class="fa fa-plus"></i></button>--}}
                     <button type="button" class="btn btn-warning " id="btnEdit" name="btnEdit"   onclick="update( '{{url('/PackageUpdate')}}' )" style="display: none;margin-top:-20px;">Edit<i class="fa fa-refresh"></i></button>
