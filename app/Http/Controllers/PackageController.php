@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Package;
-use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\Validator;
 
 
 class PackageController extends Controller
@@ -85,6 +85,32 @@ class PackageController extends Controller
 //                        'errors' => $validator->errors()
 //                    ]);
 
+           $name= $request->file('file')->getClientOriginalName();
+            $data['id'] = $name;
+            echo json_encode($data);exit;
+
+
+
+            if ($request->hasFile('file'))
+            {
+                if ($request->file('file')->isValid())
+                {
+
+                    dd("uploaded");
+
+                }
+
+                dd("upload failed");
+            }
+
+            dd("no file");
+
+            exit;
+
+
+            $request->validate([
+                'title'=>'required'
+            ]);
             $title = $request->input('title');
 
             $Package = new Package();
