@@ -10,7 +10,6 @@
 category
 </div>
 
-
 <div class="panel-body">
 <div class="table-responsive">
 <table class="table sortable table-striped table-bordered table-hover" id="dataTables-example">
