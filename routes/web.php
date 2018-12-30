@@ -25,6 +25,21 @@ Route::post('/PackageUpdate','PackageController@update');
 
 //Route::match(['get','post'],'/Package/{id}/PackageDelete','PackageController@delete');
 //Route::match(['get','put'],'/PackageUpdate/{id}','PackageController@update');
+
+
+    Route::get('/Train','TrainController@index');
+    Route::post('/TrainDelete/{id}','TrainController@delete');
+    Route::post('/TrainSelect/{id}','TrainController@select');
+    Route::match(['get','post'],'/TrainInsert','TrainController@insert');
+    Route::post('/TrainUpdate','TrainController@update');
+
+
+    Route::get('/Exercise','ExerciseController@index');
+    Route::post('/ExerciseDelete/{id}','ExerciseController@delete');
+    Route::post('/ExerciseSelect/{id}','ExerciseController@select');
+    Route::match(['get','post'],'/ExerciseInsert','ExerciseController@insert');
+    Route::post('/ExerciseUpdate','ExerciseController@update');
+
 });
 
 
@@ -47,3 +62,8 @@ Route::get('/', function () {
 //Route::get('/Login',function (){
 //    return view('Login');
 //});
+
+
+
+
+
