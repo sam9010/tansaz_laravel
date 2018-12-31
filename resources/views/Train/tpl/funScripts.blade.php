@@ -369,7 +369,7 @@
                         $('#tdTitle_'+id).html(title);
                         clear();
                         document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button  style="float: right!important;"  data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
-                        $("#btnSpeedEdit").css({ display: "none" });
+                        $("#btnEdit").css({ display: "none" });
                         $("#btnInsert").css({ display: "block" });
 
                     }

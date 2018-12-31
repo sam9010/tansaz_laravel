@@ -33,12 +33,20 @@ Route::post('/PackageUpdate','PackageController@update');
     Route::match(['get','post'],'/TrainInsert','TrainController@insert');
     Route::post('/TrainUpdate','TrainController@update');
 
-
     Route::get('/Exercise','ExerciseController@index');
+    Route::post('/ExerciseGetDaysFromPackage','ExerciseController@getDaysFromPackage');
     Route::post('/ExerciseDelete/{id}','ExerciseController@delete');
     Route::post('/ExerciseSelect/{id}','ExerciseController@select');
     Route::match(['get','post'],'/ExerciseInsert','ExerciseController@insert');
     Route::post('/ExerciseUpdate','ExerciseController@update');
+
+
+
+    Route::get('/Diet','DietController@index');
+    Route::post('/DietDelete/{id}','DieteController@delete');
+    Route::post('/DietSelect/{id}','DietController@select');
+    Route::match(['get','post'],'/DietInsert','DietController@insert');
+    Route::post('/DietUpdate','DietController@update');
 
 });
 
