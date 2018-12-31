@@ -14,7 +14,6 @@
 use \Illuminate\Support\Facades\DB;
 
 
-
 Route::group(['perfix'=> 'tansaz'],function (){
 Route::get('/Package','PackageController@index');
 Route::post('/PackageDelete/{id}','PackageController@delete');
@@ -41,12 +40,13 @@ Route::post('/PackageUpdate','PackageController@update');
     Route::post('/ExerciseUpdate','ExerciseController@update');
 
 
-
     Route::get('/Diet','DietController@index');
-    Route::post('/DietDelete/{id}','DieteController@delete');
+    Route::post('/DietDelete/{id}','DietController@delete');
     Route::post('/DietSelect/{id}','DietController@select');
+    Route::post('/DietLstDiet','DietController@lstDiet');
     Route::match(['get','post'],'/DietInsert','DietController@insert');
     Route::post('/DietUpdate','DietController@update');
+
 
 });
 
