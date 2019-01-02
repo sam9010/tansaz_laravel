@@ -4,6 +4,13 @@
     {
         $("#txtTitleInNew").val('');
         document.getElementById('resultMdlNew').innerHTML='';
+
+       $("#txtContentInNewBreakfast").val('');
+       $("#txtContentInNewSnack1").val('');
+       $("#txtContentInNewLunch").val('');
+       $("#txtContentInNewSnack2").val('');
+       $("#txtContentInNewDinner").val('');
+
     }
 
     function CleanControlsInUpdate() {
@@ -11,6 +18,12 @@
         $("#txtTitleInUpdate").val('');
         $("#idUpdate").val('');
         document.getElementById('resultMdlUpdate').innerHTML='';
+
+        $("#txtContentInUpdateBreakfast").val('');
+        $("#txtContentInUpdateSnack1").val('');
+        $("#txtContentInUpdateLunch").val('');
+        $("#txtContentInUpdateSnack2").val('');
+        $("#txtContentInUpdateDinner").val('');
     }
 
 
@@ -49,8 +62,7 @@
                 {
                     result=result.substring(1);
                     myDataView=JSON.parse(result);
-                    document.getElementById('noData').innerHTML = myDataView;
-
+                    document.getElementById('noData').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float:right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+myDataView+'</div>';
                 }
                 else
                 {
@@ -95,11 +107,11 @@
                 console.log(result);
                 if(result.error)
                 {
-                    document.getElementById('divResult').innerHTML = result.error;
+                    document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
                 }
                 else
                 {
-                    var insertLi1='<a id="thisDiet_'+id+'"  data-toggle="modal" data-target="#update-modal" href="#" onclick ="getIdDiet('+id+')" ><p>'+title+'</p></a><button type="button" style="color:red;" id="btnDeleteDiet_'+id+'" name="btnDeleteDiet_'+id+'" onclick="btnDeleteDiet('+id+')" class="close pull-left" data-dismiss="modal" aria-hidden="true">x</button>';
+                    var insertLi1='<a id="thisDiet_'+id+'"  data-toggle="modal" data-target="#update-modal" href="#" onclick ="getIdDiet('+id+')" ><p>'+title+'</p></a><button  style="float: right!important; color:red;"  type="button" id="btnDeleteDiet_'+id+'" name="btnDeleteDiet_'+id+'" onclick="btnDeleteDiet('+id+')" class="close pull-left" data-dismiss="modal" aria-hidden="true">x</button>';
                     $( "#li_diet_"+id ).html(insertLi1);
                     document.getElementById('resultMdlUpdate').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button  style="float: right!important;"  data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
 
@@ -112,7 +124,7 @@
                 }
             },
             error: function (xhr, status, error) {
-                alert("You can not delete." );
+                document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>You can not edit.</div>';
             }
         });
 
@@ -134,7 +146,7 @@
                 url: filename,
                 success: function (data) {
                     mydataDelete=JSON.parse(data);
-                    console.log(mydataDelete);
+                    // console.log(mydataDelete);
                     if(mydataDelete.yes)
                     {
                         alert(mydataDelete.yes);
@@ -142,7 +154,7 @@
                     }
                     else
                     {
-                        alert(mydataDelete.error );
+                        alert(mydataDelete.error);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -203,11 +215,12 @@
                 }
                 else
                 {
-                    document.getElementById('resultMdlNew').innerHTML =result;
+                    document.getElementById('resultMdlNew').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
+
                 }
             },
             error: function (xhr, status, error) {
-                alert("You can not delete." );
+                alert("You can not insert." );
             }
         });
 

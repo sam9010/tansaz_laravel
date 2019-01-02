@@ -13,16 +13,28 @@ class PackageController extends Controller
 
     public function index()
     {
-        $lstPackage = Package::select('id', 'title')
-            ->where('isDeleted', '=', 0)
-            ->get();
-        return view('Package.index', compact('lstPackage'));
+        try {
+            $lstPackage = Package::select('id', 'title')
+                ->where('isDeleted', '=', 0)
+                ->get();
+
+            return view('Package.index', compact('lstPackage'));
+
+        } catch (\Exception $e) {
+            $data['error'] = "The server encountered an error. Please try again later";
+            echo json_encode($data);
+        }
     }
 
     public function delete($id)
     {
         try {
-            if ($id) {
+
+            $validation = Validator::make($id, [
+               $id=> 'required | numeric ',
+            ]);
+
+            if ($validation->passes()) {
                 $dltPackage = Package::find($id);
                 $dltPackage->isDeleted = 1;
                 $dltPackage = $dltPackage->save();
@@ -33,6 +45,9 @@ class PackageController extends Controller
                     $data['error'] = "You can not delete.";
                     echo json_encode($data);
                 }
+            }else{
+                $data['error'] = "please fill the fields";
+                echo json_encode($data);
             }
         } catch (\Exception $e) {
             $data['error'] = "The server encountered an error. Please try again later";
@@ -44,17 +59,20 @@ class PackageController extends Controller
     public function select($id)
     {
         try {
-
+//            $x="The server encountered an error. Please try again later";
+//            $x.=$x.'</br>';
+//            $x.='fdgfg';
+//            $text = json_encode($x);
+//            $text = "0" . $text;
+//            echo $text;
+//            exit;
             if ($id) {
                 $sltPackage = Package::find($id);
                 if ($sltPackage) {
-//                    $text = json_encode($sltPackage);
-//                    $text = "0" . $text;
-//                    echo $text;exit;
-//                    $data['yes'] = $sltPackage;
                     echo json_encode($sltPackage);
                 } else {
-                    $text = json_encode("You can not delete.");
+
+                    $text = json_encode("You can not select.");
                     $text = "0" . $text;
                     echo $text;
                 }
@@ -67,10 +85,9 @@ class PackageController extends Controller
     }
 
 
-
-    public function insert(Request $request){
-
-        try{
+    public function insert(Request $request)
+    {
+        try {
 
             $validation = Validator::make($request->all(), [
                 'txtTitle' => 'required',
@@ -84,13 +101,12 @@ class PackageController extends Controller
                 $microtime = microtime();
                 $comps = explode(' ', $microtime);
 
-                $image = $request->file('file')->getClientOriginalName();
+//                $image = $request->file('file')->getClientOriginalName();
                 $extenstion = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
 
                 $NewName = $comps[1] . "." . $extenstion;
 
-
-                if (move_uploaded_file($_FILES['file']['tmp_name'],  '../public/uploads/package/' . $NewName)) {
+                if (move_uploaded_file($_FILES['file']['tmp_name'], '../public/uploads/package/' . $NewName)) {
                     $fileName = $NewName;
                 } else
                     $fileName = false;
@@ -113,105 +129,22 @@ class PackageController extends Controller
 //                    'message' => 'success',
 //                    'redirect_url' => action('PackageController@index'),
 //                ]);
-
                 $data['id'] = $Package->id;
                 echo json_encode($data);
-            }else{
-                $errors = $validation->errors();
-                $errors = json_decode($errors);
-                $data['error'] = $errors;
+            } else {
+//                $errors = $validation->errors();
+//                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+                
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
-
-//            return Response::json(array('success' => true, 'last_insert_id' => $errors->id), 200);
-
-//                            $data['id'] = $Package->id;
-//                echo json_encode($data);
-//                exit;
-//            return response()->json([
-//                'success' => false,
-//                'message' => $errors
-//            ], 422);
-
-
         } catch (\Exception $e) {
             $data['error'] = "The server encountered an error. Please try again later";
             echo json_encode($data);
         }
-
-
-
-
     }
 
-    public function insert111(Request $request)
-    {
-
-//        $data['id'] =$request->all();
-//        echo json_encode($data);
-//        exit;
-
-        try {
-
-//            if ($request->isMethod('get'))
-//                return view('crud_3.form');
-//            else {
-//                $rules = [
-//                    'txtTitle' => 'required',
-//                ];
-//                $validator = Validator::make($request->all(), $rules);
-//                if ($validator->fails())
-//                    return response()->json([
-//                        'fail' => true,
-//                        'errors' => $validator->errors()
-//                    ]);
-
-           $name= $request->file('file')->getClientOriginalName();
-            $data['id'] = $name;
-            echo json_encode($data);exit;
-
-
-
-            if ($request->hasFile('file'))
-            {
-                if ($request->file('file')->isValid())
-                {
-
-                    dd("uploaded");
-
-                }
-                dd("upload failed");
-            }
-
-            dd("no file");
-
-            exit;
-
-
-            $request->validate([
-                'title'=>'required'
-            ]);
-            $title = $request->input('title');
-
-            $Package = new Package();
-            $Package->title = $request->title;
-            $Package->text = $request->text;
-            $Package->days = $request->day;
-            $Package->priority = $request->priority;
-            $Package->save();
-//                return response()->json([
-//                    'fail' => false,
-//                    'redirect_url' => url('laravel-crud-search-sort-ajax')
-//                ]);
-            $data['id'] = $title;
-            echo json_encode($data);
-//            }
-        } catch (\Exception $e) {
-            $data['error'] = "The server encountered an error. Please try again later";
-            echo json_encode($data);
-        }
-
-    }
 
     public function update(Request $request)
     {
@@ -288,9 +221,11 @@ class PackageController extends Controller
 //                    echo json_encode($s);
 //                }
             }else{
-                $errors = $validation->errors();
-                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+////                $errors = json_decode($errors);
+////                $data['error'] = $errors;
+////                echo json_encode($data);
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
         } catch (\Exception $e) {

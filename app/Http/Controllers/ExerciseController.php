@@ -16,6 +16,7 @@ class ExerciseController extends Controller
 
     public function index()
     {
+        try {
         $lstExercise = DB::table('exercises')
             ->select('exercises.id as id' ,'packages.title as titlePackage','trains.title as title', 'exercises.priority as priority', 'exercises.days as days')
             ->leftjoin('packages', 'packages.id', '=', 'exercises.packageID')
@@ -36,6 +37,11 @@ class ExerciseController extends Controller
         return View('Exercise.index', compact('lstPackage','lstExercise','lstTrain'));
 
 //        return view('Exercise.index', compact('lstExercise'));
+
+        } catch (\Exception $e) {
+            $data['error'] = "The server encountered an error. Please try again later";
+            echo json_encode($data);
+        }
     }
 
     public function getDaysFromPackage(Request $request)
@@ -112,7 +118,7 @@ class ExerciseController extends Controller
                 'length'=>'required '
             ]);
 
-//                            $data['id'] = $request->length;
+//                $data['error'] = $request->length;
 //                echo json_encode($data);
 //                exit;
             if ($validation->passes()) {
@@ -122,38 +128,45 @@ class ExerciseController extends Controller
                 $uDate = $now->getTimestamp();
                 $arrayDays= explode(',', $request->day);
 
-//                $data['id'] = $request->day;
-//                echo json_encode($data);
-//                exit;
-                $Exercise = new Exercise();
-//                $start=1;
-                for($i=0;$i<$request->length;$i++)
-                {
-                    if($request->length>1){
-                        $Exercise = new Exercise();
-                    }
-                    $Exercise->packageID = $request->packageID;
-                    $Exercise->time = $request->time;
-                    $Exercise->days = $arrayDays[$i];
-                    $Exercise->priority = $request->priority;
-                    $Exercise->trainID = $request->trainID;
-                    $Exercise->u_createDate = $uDate;
-                    $Exercise->save();
-                }
 
-                $data['id'] = $Exercise->id;
+//                $start=1;
+                $id=0;
+//                for($i=0;$i<$request->length;$i++)
+//                {
+//                    $Exercise = new Exercise();
+//                    $Exercise->packageID = $request->packageID;
+//                    $Exercise->time = $request->time;
+//                    $Exercise->days = $arrayDays[$i];
+//                    $Exercise->priority = $request->priority;
+//                    $Exercise->trainID = $request->trainID;
+//                    $Exercise->u_createDate = $uDate;
+//                    $Exercise->save();
+//                }
+
+              $Exercise = new Exercise();
+              $Exercise->packageID = 2;
+              $Exercise->time = 2;
+              $Exercise->days = 2;
+              $Exercise->priority = 2;
+              $Exercise->trainID = 2;
+              $Exercise->u_createDate = 99999;
+              $Exercise->save();
+//                $id=$Exercise->id;
+
+                $data['id'] = 3333;
                 echo json_encode($data);
             }
             else
                 {
-                $errors = $validation->errors();
-//                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+////                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+//                echo json_encode($data);
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
 
 //            return Response::json(array('success' => true, 'last_insert_id' => $errors->id), 200);
-
 //                            $data['id'] = $Exercise->id;
 //                echo json_encode($data);
 //                exit;
@@ -161,8 +174,6 @@ class ExerciseController extends Controller
 //                'success' => false,
 //                'message' => $errors
 //            ], 422);
-
-
         } catch (\Exception $e) {
             $data['error'] = "The server encountered an error. Please try again later";
             echo json_encode($data);
@@ -237,9 +248,11 @@ class ExerciseController extends Controller
 //                    echo json_encode($s);
 //                }
             }else{
-                $errors = $validation->errors();
-                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+//                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+//                echo json_encode($data);
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
         } catch (\Exception $e) {

@@ -49,10 +49,7 @@
         }
         else
         {
-
             // alert(packageID);
-
-
             var token = $('#token').val();
             $.ajax({
                 headers: {
@@ -62,15 +59,17 @@
                 data: { _token: token ,id:packageID},
                 url: urlGetDaysFromPackage,
                 success: function (result) {
-                    console.log(result);
+                    // console.log(result);
                     var error=result.substring(0, 1);
                     if(error=='0')
                     {
                         result=result.substring(1);
-                        console.log(result);
+                        // console.log(result);
                         mydata2=JSON.parse(result);
-                        console.log(mydata2);
-                        document.getElementById('divResult').innerHTML = mydata2;
+                        // console.log(mydata2);
+                        // document.getElementById('divResult').innerHTML = mydata2;
+                        document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+mydata2+'</div>';
+
                     }
                     else
                     {
@@ -163,7 +162,9 @@
                     console.log(result);
                     mydata2=JSON.parse(result);
                     console.log(mydata2);
-                    document.getElementById('divResult').innerHTML = mydata2;
+                    // document.getElementById('divResult').innerHTML = mydata2;
+                    document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+mydata2+'</div>';
+
                 }
                 else
                 {
@@ -247,7 +248,7 @@
                 var form = $(this);
                 var urlInsert = form.attr("action");
 
-                alert(1);
+                // alert(form_data.get('day'));
                 //insert
                 $.ajax({
                     headers: {
@@ -266,17 +267,19 @@
                     success: function(result)
                     {
                         $(".loader").hide();
+                        // console.log(22);
                         console.log(result);
                         if(result.error)
                         {
-                            console.log(result.error);
-                            document.getElementById('divResult').innerHTML = result.error;
+                            // console.log(result.error);
+                            // document.getElementById('divResult').innerHTML = result.error;
+                            document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
                         }
                         else
                         {
                             clear();
                             document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button  style="float: right!important;"  data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
-                            $("#btnSpeedEdit").css({ display: "none" });
+                            $("#btnEdit").css({ display: "none" });
 
                             // console.log(result.id);
                             var addRow='<tr id="tr_'+result.id+'">'+
@@ -285,8 +288,8 @@
                                 '<td id="tdDay_'+result.id+'">'+day+'</td>'+
                                 '<td id="tdPriority_'+result.id+'">'+priority+'</td>'+
                                 '<td>'+
-                                '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')"> Edit</button>' +
-                                '<button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
+                                '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')"> Edit</button> ' +
+                                ' <button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
                                 '</td>'+
                                 '</tr>';
                             $('#TrainRow').prepend(addRow);
@@ -302,7 +305,6 @@
                 // alert(2);
                 var urlEdit=$('#urlEdit').val();
                 // alert(urlEdit);
-
 
 
                 var packageName= $('#sltPackage').children(":selected").text();
@@ -337,7 +339,8 @@
                         console.log(result);
                         if(result.error)
                         {
-                            document.getElementById('divResult').innerHTML = result.error;
+                            // document.getElementById('divResult').innerHTML = result.error;
+                            document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
                         }
                         else
                         {
@@ -349,7 +352,6 @@
                             document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button  style="float: right!important;"  data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
                             $("#btnInsert").css({ display: "block" });
                             $("#btnEdit").css({ display: "none" });
-
                         }
                     },
                     error: function (xhr, status, error) {
@@ -362,11 +364,6 @@
         }
 
 
-
-
     });
-
-
-
 
 </script>

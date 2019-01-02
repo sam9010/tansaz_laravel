@@ -39,7 +39,6 @@
         }
     });
 
-
     function btnDelete(filename, id)
     {
         document.getElementById('divResult').innerHTML ='';
@@ -96,10 +95,10 @@
                 if(error=='0')
                 {
                     result=result.substring(1);
-                    console.log(result);
+                    // console.log(result);
                     mydata2=JSON.parse(result);
-                    console.log(mydata2);
-                    document.getElementById('divResult').innerHTML = mydata2;
+                    // console.log(mydata2);
+                    document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+mydata2+'</div>';
                 }
                 else
                 {
@@ -123,7 +122,6 @@
         });
 
     }
-
 
     function update(filename)
     {
@@ -197,9 +195,6 @@
         });
     }
 
-
-
-
     $(document).on('submit', 'form#frm', function (event) {
         // alert(2);
         event.preventDefault();
@@ -245,7 +240,7 @@
 
                     if(result.error)
                     {
-                        document.getElementById('divResult').innerHTML = result.error;
+                        document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
                     }
                     else
                     {
@@ -313,7 +308,7 @@
                     console.log(result);
                     if(result.error)
                     {
-                        document.getElementById('divResult').innerHTML = result.error;
+                        document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
                     }
                     else
                     {
@@ -340,7 +335,7 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert("You can not insert..." );
+                    alert("You can not update..." );
                 }
             });
 
@@ -349,8 +344,5 @@
 
 
     });
-
-
-
 
 </script>

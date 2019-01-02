@@ -61,81 +61,6 @@
         }
     });
 
-//     function insert(filename) {
-//         var title=$('#txtTitle').val();
-//         var text=$('#txtContent').val();
-//         var day=$('#txtDay').val();
-//         var priority=$('#txtPriority').val();
-//
-//         var image=$('#file');
-//
-//         // var file_data = image[0].files[0];
-//         var form_data = new FormData();
-//         form_data.append('file',  image[0].files[0]);
-//         form_data.append('title', title);
-//         form_data.append('text', text);
-//         form_data.append('day', day);
-//         form_data.append('priority', priority);
-//         // event.preventDefault();
-//         // var form = $(this);
-//         // var form_data = new FormData($(this)[0]);
-//         var token = $('#token').val();
-// // alert(title);
-//         $.ajax({
-//             headers: {
-//                 'X-CSRF-TOKEN': token
-//             },
-//             type: 'POST',
-//             data:  form_data,
-//             url: filename,
-//             contentType:false,
-//             processData:false,
-//             dataType:'json',
-//             beforeSend: function()
-//             {
-//                 $(".loader").show();
-//             },
-//             success: function(result)
-//             {
-//                 console.log(result);
-//                 $(".loader").hide();
-//
-//                 if(result.error)
-//                 {
-//                     document.getElementById('divResult').innerHTML = result.error;
-//                 }
-//                 else
-//                 {
-//                     var addRow='<tr id="tr_'+result.id+'">'+
-//                         '<td id="tdTitle_'+result.id+'">'+title+'</td>'+
-//                         '<td id="tdPriority_'+result.id+'">'+priority+'</td>'+
-//                         '<td>'+
-//                         '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')">Edit</button>' +
-//                         '<button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
-//                         '</td>'+
-//                         '</tr>';
-//
-//                     $('#rowList').prepend(addRow);
-//                     $('#txtTitle').val('');
-//                     $('#txtPriority').val('');
-//                     $('#txtDay').val('');
-//                     $("#file").val('');
-//                     $("#imgFile").css({ display: "none" });
-//                     $("#hrefFile").css({ display: "none" });
-//
-//                     document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button' +
-//                         ' data-dismiss="alert"  style="float: right!important;" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
-//                     $("#btnEdit").css({ display: "none" });
-//
-//                 }
-//             },
-//             error: function (xhr, status, error) {
-//                 alert("You can not insert..." );
-//             }
-//         });
-//
-//     }
-
 
     function btnDelete(filename, id)
     {
@@ -249,8 +174,6 @@
     $(document).on('submit', 'form#frm', function (event) {
         // alert(2);
         event.preventDefault();
-
-        tinymce.triggerSave();
         var id=$('#idEdit').val();
 
 
@@ -259,6 +182,7 @@
 
         // alert(id);
         if (!$.trim(id)){
+            tinymce.triggerSave();
             var title=$('#txtTitle').val();
             var token = $('#token').val();
 
@@ -289,7 +213,10 @@
                     if(result.error)
                     {
                         console.log(result.error);
-                        document.getElementById('divResult').innerHTML = result.error;
+                        // document.getElementById('divResult').innerHTML = result.error;
+
+                        document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
+
                     }
                     else
                     {
@@ -297,7 +224,7 @@
                         var addRow='<tr id="tr_'+result.id+'">'+
                             '<td id="tdTitle_'+result.id+'">'+title+'</td>'+
                             '<td>'+
-                            '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnEdit('+result.id+')"> Edit</button>' +
+                            '<button type="button" class="btn btn-warning " id="btnInsert" name="btnInsert"  onclick="btnSelectForEdit('+result.id+')"> Edit</button>' +
                             '<button type="button" class="btn btn-danger " id="btnInsert" name="btnInsert" onclick="btnDelete('+result.id+')"> Delete</button>' +
                             '</td>'+
                             '</tr>';
@@ -315,42 +242,50 @@
                 }
             });
        }else{
-            // alert(2);
+            // var urlEdit=$('#urlEdit').val();
+// alert(id);
 // alert(urlEdit);
             tinymce.triggerSave();
             var urlEdit=$('#urlEdit').val();
             var token = $('#token').val();
-            var id=$('#idEdit').val();
+            // var id=$('#idEdit').val();
             var title=$('#txtTitle').val();
-            var text=$('#txtContent').val();
+            // var text=$('#txtContent').val();
+            //
+            // var titleMovement=$('#txtTitleMovement').val();
+            //
+            // var form_data = new FormData();
+            //
+            // var fileHidden=$('#fileHidden').val();
+            // var pictureHidden=$('#pictureHidden').val();
+            //
+            // var file_data = $('#file').prop('files')[0];
+            // var picture_data = $('#picture').prop('files')[0];
+            //
+            // form_data.append('titleMovement', titleMovement);
+            // form_data.append('file', file_data);
+            // form_data.append('picture', picture_data);
+            // form_data.append('id', id);
+            // form_data.append('title', title);
+            // form_data.append('text', text);
+            // form_data.append('fileHidden', fileHidden);
+            // form_data.append('pictureHidden', pictureHidden);
 
-            var titleMovement=$('#txtTitleMovement').val();
+            var form = $(this);
+            var form_data2 = new FormData($(this)[0]);
 
-            var form_data = new FormData();
-
-            var fileHidden=$('#fileHidden').val();
-            var pictureHidden=$('#pictureHidden').val();
-
-            var file_data = $('#file').prop('files')[0];
-            var picture_data = $('#picture').prop('files')[0];
-
-            form_data.append('titleMovement', titleMovement);
-            form_data.append('file', file_data);
-            form_data.append('picture', picture_data);
-            form_data.append('id', id);
-            form_data.append('title', title);
-            form_data.append('text', text);
-            form_data.append('fileHidden', fileHidden);
-            form_data.append('pictureHidden', pictureHidden);
-
+            console.log(form_data2.get('txtTitleMovement'));
             //update
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': token
                 },
                 type:'POST',
-                data: form_data,
+                data: form_data2,
                 url: urlEdit,
+                contentType:false,
+                processData:false,
+                dataType:'json',
                 beforeSend: function()
                 {
                     $(".loader").show();
@@ -362,7 +297,7 @@
                     console.log(result);
                     if(result.error)
                     {
-                        document.getElementById('divResult').innerHTML = result.error;
+                        document.getElementById('divResult').innerHTML = '<div class="alert alert-block alert-danger fade in" id="result"><button style="float: right!important;" data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>'+result.error+'</div>';
                     }
                     else
                     {
@@ -371,21 +306,13 @@
                         document.getElementById('divResult').innerHTML ='<div class="alert alert-block alert-success fade in" id="result"><button  style="float: right!important;"  data-dismiss="alert" class="close close-sm" type="button"><i class="fa fa-times"></i></button>done successfully</div>';
                         $("#btnEdit").css({ display: "none" });
                         $("#btnInsert").css({ display: "block" });
-
                     }
                 },
                 error: function (xhr, status, error) {
                     alert("You can not insert..." );
                 }
             });
-
        }
-
-
-
     });
-
-
-
 
 </script>

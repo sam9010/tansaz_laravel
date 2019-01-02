@@ -13,10 +13,16 @@ class TrainController extends Controller
 
     public function index()
     {
+        try {
         $lstTrain = Train::select('id', 'title')
             ->where('isDeleted', '=', 0)
             ->get();
         return view('Train.index', compact('lstTrain'));
+
+        } catch (\Exception $e) {
+            $data['error'] = "The server encountered an error. Please try again later";
+            echo json_encode($data);
+        }
     }
 
     public function delete($id)
@@ -117,9 +123,12 @@ class TrainController extends Controller
                 $data['id'] = $Train->id;
                 echo json_encode($data);
             }else{
-                $errors = $validation->errors();
-                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+//                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+//                echo json_encode($data);
+
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
 
@@ -135,26 +144,28 @@ class TrainController extends Controller
 
     public function update(Request $request)
     {
-        $data['id'] = $request->all();
-        echo json_encode($data);exit;
+
         try{
 
             $validation = Validator::make($request->all(), [
-                'title' => 'required',
-                'titleMovement' => 'required ',
-                'text' => 'required ',
+                'txtTitle' => 'required',
+                'txtTitleMovement' => 'required ',
+                'txtContent' => 'required ',
             ]);
 
 
 
             if ($validation->passes()) {
+
+
+
 //        $data['id'] =$request->title;
 //        echo json_encode($data);
 //        exit;
 //            if ($request->ajax()) {
-
+//                $NewNameFile="";
                 if (empty($_FILES['file']['name'])) {
-                    $NewNameFile = $_POST['fileHidden'];
+                    $NewNameFile = $request->fileHidden;
                 } else {
                     $microtime = microtime();
                     $comps = explode(' ', $microtime);
@@ -170,17 +181,24 @@ class TrainController extends Controller
                 }
 
 
-
+//                $NewNamePicture="";
                 if (empty($_FILES['picture']['name'])) {
-                    $NewNamePicture = $_POST['pictureHidden'];
+                    $NewNamePicture = $request->pictureHidden;
                 } else {
-                    $microtime = microtime();
-                    $comps = explode(' ', $microtime);
-                    $extenstion = pathinfo($_FILES["picture"]["name"], PATHINFO_EXTENSION);
-                    $NewName = $comps[1] . "." . $extenstion;
-                     move_uploaded_file($_FILES['picture'],   '../public/uploads/train/'.$NewName);
-                    $NewNamePicture =$NewName;
+                    $microtime2 = microtime();
+                    $comps2 = explode(' ', $microtime2);
+                    $extenstion2 = pathinfo($_FILES["picture"]["name"], PATHINFO_EXTENSION);
+                    $NewName2 = $comps2[1] . "." . $extenstion2;
+                    if ( move_uploaded_file($_FILES['picture']['tmp_name'],   '../public/uploads/train/'.$NewName2)){
+                        $NewNamePicture =$NewName2;
+                    }else {
+                        $data['error'] = 'File uploads encountered an error. Try again';
+                        echo json_encode($data);
+                        exit;
+                    }
                 }
+
+
 
 //                if ($fileName) {
 
@@ -188,42 +206,47 @@ class TrainController extends Controller
                     $now = new \DateTime($dateToday);
                     $uDate = $now->getTimestamp();
 
-                    $id = $request->id;
+                    $id = $request->idEdit;
 //                $title = $request->priority;;
 //                $data['error'] = $title;
 //                echo json_encode($data);
 //                exit;
 
+//                $data['id'] = $NewNameFile;
+//                echo json_encode($data);exit;
+
                     $uptTrain = Train::find($id);
-                    $uptTrain->title = $request->title;
-                    $uptTrain->titleMovement = $request->titleMovement;
-                    $uptTrain->text = $request->text;
+                    $uptTrain->title = $request->txtTitle;
+                    $uptTrain->titleMovement = $request->txtTitleMovement;
+                    $uptTrain->text = $request->txtContent;
                     $uptTrain->picture = $NewNamePicture;
                     $uptTrain->file = $NewNameFile;
                     $uptTrain->updateDate = $dateToday;
                     $uptTrain->u_updateDate = $uDate;
-                    $uptTrain = $uptTrain->save();
+                    $uptTrain->save();
 
 //                $data['error'] = $uptTrain->title;
 //                echo json_encode($data);
 //                exit;
 
-                    if ($uptTrain) {
+//                    if ($uptTrain) {
                         $data['yes'] = "Successfully";
                         echo json_encode($data);
-                    } else {
-                        $data['error'] = "You can not edit.";
-                        echo json_encode($data);
-                    }
+//                    } else {
+//                        $data['error'] = "You can not edit.";
+//                        echo json_encode($data);
+//                    }
 //                }
 //                }else{
 //                    $s['error'] =  'The file faces a problem.';
 //                    echo json_encode($s);
 //                }
             }else{
-                $errors = $validation->errors();
-                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+//                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+//                echo json_encode($data);
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
         } catch (\Exception $e) {

@@ -14,38 +14,48 @@ class DietController extends Controller
 
     public function index()
     {
-        $lstPackage = Package::select('id', 'title')
-            ->where('isDeleted', '=', 0)
-            ->get();
-        return view('Diet.index', compact('lstPackage'));
+        try {
+            $lstPackage = Package::select('id', 'title')
+                ->where('isDeleted', '=', 0)
+                ->get();
+            return view('Diet.index', compact('lstPackage'));
+        } catch (\Exception $e) {
+            $data['error'] = "The server encountered an error. Please try again later";
+            echo json_encode($data);
+        }
     }
 
-    public function lstDiet(Request $request){
+    public function lstDiet(Request $request)
+    {
+        try {
+            $validation = Validator::make($request->all(), [
+                'id' => 'required | numeric | not_in:-1'
+            ]);
 
-        $validation = Validator::make($request->all(), [
-            'id'=> 'required | numeric | not_in:-1'
-        ]);
+            if ($validation->passes()) {
 
-        if ($validation->passes()) {
-
-                $lstDiet= Diet::select('id', 'title')
+                $lstDiet = Diet::select('id', 'title')
                     ->where('isDeleted', '=', 0)
                     ->where('packageID', '=', $request->id)
                     ->get();
 
-            return view('Diet.tpl.lstDiet', compact('lstDiet'));
+                return view('Diet.tpl.lstDiet', compact('lstDiet'));
 
 //            $data['error'] =$lstDiet;
 //            echo json_encode($data);
 //            exit;
 
-        }  else {
+            } else {
+                $text = json_encode('not found field');
+                $text = "0" . $text;
+                echo $text;
+            }
+        } catch (\Exception $e) {
 
-            $text = json_encode($validation->errors());
+            $text = json_encode('The server encountered an error. Please try again later');
             $text = "0" . $text;
             echo $text;
         }
-
     }
 
 
@@ -140,9 +150,12 @@ class DietController extends Controller
                 $data['id'] = $Diet->id;
                 echo json_encode($data);
             }else{
-                $errors = $validation->errors();
-//                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+////                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+//                echo json_encode($data);
+
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
 
@@ -232,9 +245,11 @@ class DietController extends Controller
 //                    echo json_encode($s);
 //                }
             }else{
-                $errors = $validation->errors();
-                $errors = json_decode($errors);
-                $data['error'] = $errors;
+//                $errors = $validation->errors();
+//                $errors = json_decode($errors);
+//                $data['error'] = $errors;
+//                echo json_encode($data);
+                $data['error'] = "please fill the fields";
                 echo json_encode($data);
             }
         } catch (\Exception $e) {
